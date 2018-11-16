@@ -1,10 +1,9 @@
 package mgo
 
 import (
-	"log"
 	"time"
 
-	"github.com/CARVIN94/go-util/logcolor"
+	"github.com/CARVIN94/go-util/log"
 	"github.com/globalsign/mgo"
 )
 
@@ -29,7 +28,7 @@ type Task struct {
 
 // Connect 初始化并连接数据库
 func Connect(config *Config) {
-	defer log.Print(logcolor.Success("数据库连接成功" + " " + config.Hosts))
+	defer log.Success("数据库连接成功" + " " + config.Hosts)
 	var err error
 	if config.Timeout == 0 {
 		config.Timeout = time.Second * 1
@@ -45,11 +44,9 @@ func Connect(config *Config) {
 	}
 
 	session, err = mgo.DialWithInfo(dialInfo)
-	database = config.Database
+	log.FailOnError(err, "数据库连接失败")
 
-	if err != nil {
-		log.Fatal(logcolor.Error("数据库连接失败"), err)
-	}
+	database = config.Database
 
 	session.SetMode(mgo.Monotonic, true)
 }
