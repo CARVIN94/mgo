@@ -67,3 +67,14 @@ func Collection(database string, collection string) Task {
 func (task *Task) End() {
 	task.Database.Session.Close()
 }
+
+// EnableNotFound 处理没有搜索到数据的情况
+func (task *Task) EnableNotFound() {
+	if r := recover(); r != nil {
+		if err, ok := r.(error); ok {
+			if err.Error() != "not found" {
+				panic(err)
+			}
+		}
+	}
+}
