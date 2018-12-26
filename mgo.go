@@ -30,9 +30,7 @@ type Task struct {
 func Connect(config *Config) {
 	defer log.Success("数据库连接成功" + " " + config.Hosts)
 	var err error
-	if config.Timeout == 0 {
-		config.Timeout = time.Second * 1
-	}
+
 	dialInfo := &mgo.DialInfo{
 		Addrs:     []string{config.Hosts},
 		Direct:    false,
